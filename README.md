@@ -1,38 +1,83 @@
-# create-svelte
+# LightningChart<sup>&#174;</sup> JS SvelteKit usage example
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Bare bones example of using LightningChart JS in a [SvelteKit](https://svelte.dev/) application.
 
-## Creating a project
+Application template was created with [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte) v5.0.2 in July 2023.
 
-If you're seeing this, you've probably already done this step. Congrats!
+See commit history for exact steps for adding LightningChart JS in.
+Here's a summary of steps:
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Install LightningChart JS
 
-# create a new project in my-app
-npm create svelte@latest my-app
+`npm i @arction/lcjs`
+
+## Use LightningChart JS in a Svelte page by
+
+1. Creating a DIV to house the chart
+
+```html
+<!-- routes/+page.svelte -->
+<div id='chart'></div>
+
+<style>
+    #chart {
+        height: 300px;
+    }
+</style>
 ```
 
-## Developing
+2. Creating the chart using `onMount` lifecycle function
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+```html
+<!-- routes/+page.svelte -->
+<script>
+    import { onMount } from 'svelte'
+    import { Themes, lightningChart } from '@arction/lcjs'
 
-```bash
-npm run dev
+    onMount(() => {
+        const container = document.getElementById('chart')
+        if (!container) { return }
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+        const chart = lightningChart().ChartXY({ container, theme: Themes.light })
+
+        return () => {
+            // This callback is called when the component is destroyed.
+            chart.dispose()
+        }
+    })
+</script>
 ```
 
-## Building
+## Passing data to LightningChart JS
 
-To create a production version of your app:
+This example passes data to the chart using a simple import from the server, like so:
 
-```bash
-npm run build
+```js
+// routes/+page.server.js
+export function load() {
+	const exampleData = [];
+	let prevY = 0;
+	for (let i = 0; i < 100000; i += 1) {
+		const y = prevY + (Math.random() * 2 - 1);
+		exampleData.push({ x: i, y });
+		prevY = y;
+	}
+	return { exampleData };
+}
 ```
 
-You can preview the production build with `npm run preview`.
+```html
+<!-- routes/+page.svelte -->
+<script>
+    export let data;
+    // ...
+    const lineSeries = chart.addLineSeries({ dataPattern: { pattern: 'ProgressiveX' } })
+        .add(data.exampleData)
+</script>
+```
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## More resources
+
+- Learn more about [SvelteKit](https://kit.svelte.dev/)
+- Learn more about [LightningChart JS](https://lightningchart.com/js-charts/docs/)
+
