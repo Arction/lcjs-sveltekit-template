@@ -26,6 +26,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@arction/lcjs": "^4.1.2"
+		"@lightningchart/lcjs": "^5.2.1"
 	}
 }

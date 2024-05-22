@@ -9,7 +9,7 @@ Here's a summary of steps:
 
 ## Install LightningChart JS
 
-`npm i @arction/lcjs`
+`npm i @lightningchart/lcjs`
 
 ## Use LightningChart JS in a Svelte page by
 
@@ -17,12 +17,12 @@ Here's a summary of steps:
 
 ```html
 <!-- routes/+page.svelte -->
-<div id='chart'></div>
+<div id="chart"></div>
 
 <style>
-    #chart {
-        height: 300px;
-    }
+	#chart {
+		height: 300px;
+	}
 </style>
 ```
 
@@ -31,20 +31,22 @@ Here's a summary of steps:
 ```html
 <!-- routes/+page.svelte -->
 <script>
-    import { onMount } from 'svelte'
-    import { Themes, lightningChart } from '@arction/lcjs'
+	import { onMount } from 'svelte';
+	import { Themes, lightningChart } from '@lightningchart/lcjs';
 
-    onMount(() => {
-        const container = document.getElementById('chart')
-        if (!container) { return }
+	onMount(() => {
+		const container = document.getElementById('chart');
+		if (!container) {
+			return;
+		}
 
-        const chart = lightningChart().ChartXY({ container, theme: Themes.light })
+		const chart = lightningChart().ChartXY({ container, theme: Themes.light });
 
-        return () => {
-            // This callback is called when the component is destroyed.
-            chart.dispose()
-        }
-    })
+		return () => {
+			// This callback is called when the component is destroyed.
+			chart.dispose();
+		};
+	});
 </script>
 ```
 
@@ -69,10 +71,11 @@ export function load() {
 ```html
 <!-- routes/+page.svelte -->
 <script>
-    export let data;
-    // ...
-    const lineSeries = chart.addLineSeries({ dataPattern: { pattern: 'ProgressiveX' } })
-        .add(data.exampleData)
+	export let data;
+	// ...
+	const lineSeries = chart
+		.addLineSeries({ dataPattern: { pattern: 'ProgressiveX' } })
+		.add(data.exampleData);
 </script>
 ```
 
@@ -80,4 +83,3 @@ export function load() {
 
 - Learn more about [SvelteKit](https://kit.svelte.dev/)
 - Learn more about [LightningChart JS](https://lightningchart.com/js-charts/docs/)
-

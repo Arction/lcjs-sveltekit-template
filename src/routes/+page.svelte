@@ -11,7 +11,7 @@
 
 <script>
     import { onMount } from 'svelte'
-    import { Themes, lightningChart } from '@arction/lcjs'
+    import { Themes, lightningChart } from '@lightningchart/lcjs'
     export let data;
 
     onMount(() => {
