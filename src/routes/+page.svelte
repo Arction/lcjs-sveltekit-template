@@ -11,7 +11,7 @@
 
 <script>
     import { onMount } from 'svelte'
-    import { Themes, lightningChart } from '@lightningchart/lcjs'
+    import { Themes, lightningChart, emptyFill } from '@lightningchart/lcjs'
     export let data;
 
     onMount(() => {
@@ -19,8 +19,9 @@
         if (!container) { return }
 
         const chart = lightningChart().ChartXY({ container, theme: Themes.light })
-        const lineSeries = chart.addLineSeries({ dataPattern: { pattern: 'ProgressiveX' } })
-            .add(data.exampleData)
+        const lineSeries = chart.addPointLineAreaSeries({ dataPattern: 'ProgressiveX' })
+            .setAreaFillStyle(emptyFill)
+            .appendJSON(data.exampleData)
 
         return () => {
             chart.dispose()
